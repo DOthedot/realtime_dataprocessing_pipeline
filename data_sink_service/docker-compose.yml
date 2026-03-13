@@ -1,0 +1,34 @@
+version: "3.8"
+
+networks:
+  pipeline-network:
+    name: pipeline-network
+    external: true
+
+volumes:
+  scylla-data:
+
+services:
+  scylladb:
+    image: scylladb/scylla:2025.4.5
+    container_name: scylladb
+    command: >
+      --smp 1
+      --memory 750M
+      --overprovisioned 1
+      --developer-mode 1
+      --minimum-replication-factor-warn-threshold 1
+    ports:
+      - "9042:9042"     # CQL native transport
+      - "9160:9160"     # Thrift (legacy)
+      - "10000:10000"   # REST API
+    volumes:
+      - scylla-data:/var/lib/scylla
+    networks:
+      - pipeline-network
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status | grep -E '^UN'"]
+      interval: 20s
+      timeout: 15s
+      retries: 10
+      start_period: 60s

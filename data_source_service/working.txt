@@ -1,0 +1,6 @@
+this created trading sample data in avro format , which can later by used by event ingestion service
+to ingest in the kafka broker
+
+
+-- to run the producer script which ingests the stock data into the 
+DURATION=10 TOPIC=stock-tech uv run stock_producer.py

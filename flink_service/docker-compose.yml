@@ -1,0 +1,35 @@
+networks:
+  pipeline-network:
+    name: pipeline-network
+    external: true
+
+services:
+  flink-jobmanager:
+    build:
+      context: ./pyflink
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: flink-jobmanager
+    command: jobmanager
+    networks:
+      - pipeline-network
+
+  flink-taskmanager:
+    build:
+      context: ./pyflink
+      dockerfile: Dockerfile
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: flink-jobmanager
+        taskmanager.numberOfTaskSlots: 2
+    networks:
+      - pipeline-network

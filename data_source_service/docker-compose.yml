@@ -1,0 +1,43 @@
+version: "3.8"
+
+networks:
+  pipeline-network:
+    name: pipeline-network
+    external: true
+
+services:
+  producer-tech:
+    build: .
+    container_name: producer-tech
+    restart: unless-stopped
+    environment:
+      KAFKA_BROKER: redpanda:9092
+      TOPIC: stock-tech
+      SYMBOLS: AAPL,GOOGL,MSFT,NVDA
+      INTERVAL: "1"
+    networks:
+      - pipeline-network
+
+  producer-consumer:
+    build: .
+    container_name: producer-consumer
+    restart: unless-stopped
+    environment:
+      KAFKA_BROKER: redpanda:9092
+      TOPIC: stock-consumer
+      SYMBOLS: AMZN,TSLA,NFLX,META
+      INTERVAL: "1"
+    networks:
+      - pipeline-network
+
+  producer-mixed:
+    build: .
+    container_name: producer-mixed
+    restart: unless-stopped
+    environment:
+      KAFKA_BROKER: redpanda:9092
+      TOPIC: stock-mixed
+      SYMBOLS: AAPL,TSLA,AMZN,NVDA,NFLX
+      INTERVAL: "0.5"
+    networks:
+      - pipeline-network

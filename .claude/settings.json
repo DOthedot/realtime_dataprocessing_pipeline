@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv add:*)",
+      "Bash(uv sync:*)",
+      "WebFetch(domain:search.maven.org)",
+      "WebFetch(domain:hub.docker.com)",
+      "WebFetch(domain:repo1.maven.org)",
+      "WebFetch(domain:pypi.org)",
+      "WebFetch(domain:nightlies.apache.org)",
+      "WebFetch(domain:docs.scylladb.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:cassandra-driver.readthedocs.io)",
+      "WebFetch(domain:docs.datastax.com)",
+      "WebFetch(domain:www.scylladb.com)",
+      "Bash(docker exec:*)",
+      "Bash(docker ps:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/dhananjayojha/Documents/projects/de_projects/realtime_dataprocessing_pipeline/flink_service/pyflink/usr_jobs"
+    ]
+  }
+}

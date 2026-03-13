@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  pipeline-network:
+    name: pipeline-network
+    external: true
+
+services:
+  stream-processor:
+    build: .
+    restart: unless-stopped
+    environment:
+      KAFKA_BROKER: redpanda:9092
+      TOPICS: stock-tech,stock-consumer,stock-mixed
+      SCYLLA_HOST: scylladb
+      BATCH_SIZE: "500"
+    networks:
+      - pipeline-network
+    deploy:
+      replicas: 3

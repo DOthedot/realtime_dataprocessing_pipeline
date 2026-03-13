@@ -1,0 +1,48 @@
+networks:
+  pipeline-network:
+    name: pipeline-network
+    driver: bridge
+
+services:
+  redpanda:
+    image: redpandadata/redpanda:latest
+    container_name: redpanda
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+      - --mode dev-container
+      - --smp 1
+    ports:
+      - "19092:19092"
+    networks:
+      - pipeline-network
+
+  redpanda-init:
+    image: redpandadata/redpanda:latest
+    container_name: redpanda-init
+    depends_on:
+      - redpanda
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        sleep 5
+        rpk topic create stock-tech     --partitions 3 --brokers redpanda:9092 || true
+        rpk topic create stock-consumer --partitions 3 --brokers redpanda:9092 || true
+        rpk topic create stock-mixed    --partitions 3 --brokers redpanda:9092 || true
+        echo "Topics created."
+    networks:
+      - pipeline-network
+
+  redpanda-console:
+    image: redpandadata/console:latest
+    container_name: redpanda-console
+    depends_on:
+      - redpanda
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_BROKERS: redpanda:9092
+    networks:
+      - pipeline-network
