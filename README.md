@@ -14,10 +14,10 @@ A production-grade realtime data pipeline that ingests synthetic stock trade eve
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         pipeline-network (Docker bridge)                     │
-│                                                                              │
+│                         pipeline-network (Docker bridge)                    │
+│                                                                             │
 │  ┌─────────────┐     ┌──────────────────────────────────┐                   │
-│  │  Producers  │     │         Redpanda (Kafka)          │                   │
+│  │  Producers  │     │         Redpanda (Kafka)         │                   │
 │  │─────────────│     │──────────────────────────────────│                   │
 │  │ producer-   │────▶│  stock-tech     (3 partitions)   │                   │
 │  │   tech      │     │  stock-consumer (3 partitions)   │                   │
@@ -25,10 +25,10 @@ A production-grade realtime data pipeline that ingests synthetic stock trade eve
 │  │  consumer   │     │                                  │                   │
 │  │ producer-   │────▶│  Console UI → localhost:8080     │                   │
 │  │   mixed     │     └──────────────┬───────────────────┘                   │
-│  └─────────────┘                    │                                        │
+│  └─────────────┘                    │                                       │
 │                          ┌──────────┴──────────┐                            │
 │                          │                     │                            │
-│                   ┌──────▼──────┐     ┌────────▼────────┐                  │
+│                   ┌──────▼──────┐     ┌────────▼─────────┐                  │
 │                   │ Apache Flink│     │  Worker Service  │                  │
 │                   │ (PRIMARY)   │     │  (ADD-ON)        │                  │
 │                   │─────────────│     │──────────────────│                  │
@@ -37,8 +37,8 @@ A production-grade realtime data pipeline that ingests synthetic stock trade eve
 │                   │ UI → :8081  │     │ async writes     │                  │
 │                   └──────┬──────┘     └────────┬─────────┘                  │
 │                          └──────────┬──────────┘                            │
-│                                     │                                        │
-│                           ┌─────────▼─────────┐                            │
+│                                     │                                       │
+│                           ┌─────────▼──────────┐                            │
 │                           │     ScyllaDB       │                            │
 │                           │────────────────────│                            │
 │                           │ stock_pipeline     │                            │
