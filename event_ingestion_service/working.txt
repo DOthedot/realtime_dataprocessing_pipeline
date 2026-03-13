@@ -1,2 +1,0 @@
-this will contain the webhook service which ingests extremly hight through stocks data , 
-which goes into the kafka service, good to create webhook which pushes the data after they got the same 
