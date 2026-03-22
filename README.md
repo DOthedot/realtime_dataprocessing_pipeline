@@ -12,42 +12,7 @@ A production-grade realtime data pipeline that ingests synthetic stock trade eve
 
 ## Architecture
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         pipeline-network (Docker bridge)                    │
-│                                                                             │
-│  ┌─────────────┐     ┌──────────────────────────────────┐                   │
-│  │  Producers  │     │         Redpanda (Kafka)         │                   │
-│  │─────────────│     │──────────────────────────────────│                   │
-│  │ producer-   │────▶│  stock-tech     (3 partitions)   │                   │
-│  │   tech      │     │  stock-consumer (3 partitions)   │                   │
-│  │ producer-   │────▶│  stock-mixed    (3 partitions)   │                   │
-│  │  consumer   │     │                                  │                   │
-│  │ producer-   │────▶│  Console UI → localhost:8080     │                   │
-│  │   mixed     │     └──────────────┬───────────────────┘                   │
-│  └─────────────┘                    │                                       │
-│                          ┌──────────┴──────────┐                            │
-│                          │                     │                            │
-│                   ┌──────▼──────┐     ┌────────▼─────────┐                  │
-│                   │ Apache Flink│     │  Worker Service  │                  │
-│                   │ (PRIMARY)   │     │  (ADD-ON)        │                  │
-│                   │─────────────│     │──────────────────│                  │
-│                   │ jobmanager  │     │ 3 Python replicas│                  │
-│                   │ taskmanager │     │ batch size = 500 │                  │
-│                   │ UI → :8081  │     │ async writes     │                  │
-│                   └──────┬──────┘     └────────┬─────────┘                  │
-│                          └──────────┬──────────┘                            │
-│                                     │                                       │
-│                           ┌─────────▼──────────┐                            │
-│                           │     ScyllaDB       │                            │
-│                           │────────────────────│                            │
-│                           │ stock_pipeline     │                            │
-│                           │   .stock_trades    │                            │
-│                           │                    │                            │
-│                           │ CQL → :9042        │                            │
-│                           └────────────────────┘                            │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+![Pipeline Architecture](asset/architecture.jpg)
 
 ### Data Flow
 

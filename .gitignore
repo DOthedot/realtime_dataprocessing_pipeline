@@ -21,8 +21,6 @@ env/
 .env.*
 !.env.example
 
-# Claude Code
-# .claude/   ← intentionally committed (project-level tool permissions, no secrets)
 
 # IDE
 .idea/
