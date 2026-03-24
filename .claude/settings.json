@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(find /Users/dhananjayojha/Documents/projects/de_projects/realtime_dataprocessing_pipeline -name CLAUDE* -o -name .claude -type d)",
+      "Bash(git -C /Users/dhananjayojha/Documents/projects/de_projects/realtime_dataprocessing_pipeline ls-files --others --cached --exclude-standard)"
+    ],
     "additionalDirectories": [
       "/Users/dhananjayojha/Documents/projects/de_projects/realtime_dataprocessing_pipeline/asset"
     ]
